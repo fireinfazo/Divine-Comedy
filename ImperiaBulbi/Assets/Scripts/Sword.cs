@@ -1,43 +1,70 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Sword : MonoBehaviour
 {
-    [SerializeField] private SwordData SwordData;
+    private Animator anim;
+    public float cooldown = 1f;
+    private float nextFireTime = 0f;
+    public static int noOfClicks = 0;
+    float lastClickedTime = 0;
+    float maxComboDelay = 1;
 
-    private float timeSinceLastAttack;
-
-    private void Start()
+    void Start()
     {
-        PlayerAttack.attackInput += Attack;
+        anim = GetComponent<Animator>();
     }
 
-    private bool CanAttack() => timeSinceLastAttack > 1f / (SwordData.fireRate / 60f);
-    public void Attack()
+    void Update()
     {
-        
-            if (CanAttack())
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderOneAttack"))
+        {
+            anim.SetBool("ZweiHanderOneAttack", false);
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderTwoAttacks"))
+        {
+            anim.SetBool("ZweiHanderTwoAttacks", false);
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderThreeAttacks"))
+        {
+            anim.SetBool("ZweiHanderThreeAttacks", false);
+            noOfClicks = 0;
+        }
+
+        if(Time.time - lastClickedTime < maxComboDelay) 
+        {
+            noOfClicks = 0;
+        }
+        if(Time.time > nextFireTime)
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hitInfo, SwordData.maxDistance))
-                {
-                    Damageable damageable = hitInfo.transform.GetComponent<Damageable>();
-                    damageable?.TakeDamage(SwordData.damage);
-                }
-                timeSinceLastAttack = 0;
-                OnGunShot();
+                OnClick();
             }
+        }
     }
 
-    private void Update()
+    private void OnClick()
     {
-        timeSinceLastAttack += Time.deltaTime;
-    }
+        lastClickedTime = Time.time;
+        noOfClicks++;
+        if(noOfClicks == 1)
+        {
+            anim.SetBool("ZweiHanderOneAttack", true);
+        }
+        noOfClicks = Mathf.Clamp(noOfClicks, 0, 3);
 
-    private void OnGunShot()
-    {
-
+        if (noOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderOneAttack"))
+        {
+            anim.SetBool("ZweiHanderOneAttack", false);
+            anim.SetBool("ZweiHanderTwoAttacks", true);
+        }
+        if (noOfClicks >= 3 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderTwoAttacks"))
+        {
+            anim.SetBool("ZweiHanderTwoAttacks", false);
+            anim.SetBool("ZweiHanderThreeAttacks", true);
+        }
     }
 }
