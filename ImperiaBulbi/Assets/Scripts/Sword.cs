@@ -1,24 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
+ 
 public class Sword : MonoBehaviour
 {
     private Animator anim;
-    public float cooldown = 1f;
+    public float cooldownTime = 2f;
     private float nextFireTime = 0f;
     public static int noOfClicks = 0;
     float lastClickedTime = 0;
     float maxComboDelay = 1;
-
-    void Start()
+ 
+    private void Start()
     {
         anim = GetComponent<Animator>();
     }
-
     void Update()
     {
+ 
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderOneAttack"))
         {
             anim.SetBool("ZweiHanderOneAttack", false);
@@ -32,30 +31,35 @@ public class Sword : MonoBehaviour
             anim.SetBool("ZweiHanderThreeAttacks", false);
             noOfClicks = 0;
         }
-
-        if(Time.time - lastClickedTime < maxComboDelay) 
+ 
+ 
+        if (Time.time - lastClickedTime > maxComboDelay)
         {
             noOfClicks = 0;
         }
-        if(Time.time > nextFireTime)
+ 
+        //cooldown time
+        if (Time.time > nextFireTime)
         {
+            // Check for mouse input
             if (Input.GetMouseButtonDown(0))
             {
                 OnClick();
+ 
             }
         }
     }
-
-    private void OnClick()
+ 
+    void OnClick()
     {
         lastClickedTime = Time.time;
         noOfClicks++;
-        if(noOfClicks == 1)
+        if (noOfClicks == 1)
         {
             anim.SetBool("ZweiHanderOneAttack", true);
         }
         noOfClicks = Mathf.Clamp(noOfClicks, 0, 3);
-
+ 
         if (noOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("ZweiHanderOneAttack"))
         {
             anim.SetBool("ZweiHanderOneAttack", false);
