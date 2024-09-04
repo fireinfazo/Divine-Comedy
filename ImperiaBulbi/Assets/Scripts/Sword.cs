@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sword : MonoBehaviour
 {
     private Animator anim;
-    public float cooldownTime = 2f;
+    public float cooldownTime = 1f;
     private float nextFireTime = 0f;
     public static int noOfClicks = 0;
     float lastClickedTime = 0;
@@ -38,10 +38,8 @@ public class Sword : MonoBehaviour
             noOfClicks = 0;
         }
  
-        //cooldown time
         if (Time.time > nextFireTime)
         {
-            // Check for mouse input
             if (Input.GetMouseButtonDown(0))
             {
                 OnClick();

@@ -15,8 +15,8 @@ MonoBehaviour:
   name: Knife
   damage: 100
   maxDistance: 100
-  currentAmmo: 2147482510
+  currentAmmo: 4
   magSize: 4
-  fireRate: 1e+11
+  fireRate: 10
   reloadTime: 1.5
   reloading: 0

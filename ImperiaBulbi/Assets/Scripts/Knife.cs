@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Knife : MonoBehaviour
 {
     [SerializeField] private ThrowableData knifeData;
+    [SerializeField] private Mana DrainMana;
 
     private float timeSinceLastShot;
 
