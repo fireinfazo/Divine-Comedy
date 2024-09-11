@@ -1,11 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+
 
 public class Enemy : MonoBehaviour
 {
-    public void Die()
+    public float health = 100f;
+
+    public void TakeDamage(float damage)
     {
-        Destroy(gameObject);
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

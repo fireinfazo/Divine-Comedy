@@ -6,14 +6,19 @@ public class MagicBall : MonoBehaviour
 {
     public Transform ProjectileSpawnPoint;
     public GameObject ProjectilePrefab;
-    public float projectiletSpeed = 10;
+    public float projectileSpeed = 100;
+    public float fireRate = 1f;
+    private float nextFireTime;
+    public Mana manaScript;
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Mouse1) && Time.time > nextFireTime && manaScript.mana >= 10)
         {
-            var FireBall = Instantiate(ProjectilePrefab, ProjectileSpawnPoint.position, ProjectileSpawnPoint.rotation);
-            FireBall.GetComponent<Rigidbody>().velocity = ProjectileSpawnPoint.forward * projectiletSpeed;
+            nextFireTime = Time.time + fireRate;
+            manaScript.DrainMana(10);
+            var fireBall = Instantiate(ProjectilePrefab, ProjectileSpawnPoint.position, ProjectileSpawnPoint.rotation);
+            fireBall.GetComponent<Rigidbody>().velocity = ProjectileSpawnPoint.forward * projectileSpeed;
         }
     }
 }

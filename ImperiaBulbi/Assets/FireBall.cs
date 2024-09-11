@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
-    public float life = 10;
+    public float damage = 100f;
 
-    void Awake()
+    private void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject, life);
-    }
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
 
-    void OnCollisionEnter(Collision collision)
-    {
-        Destroy(collision.gameObject);
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);
+        }
         Destroy(gameObject);
     }
 }

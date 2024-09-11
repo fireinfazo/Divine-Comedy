@@ -10,11 +10,13 @@ public class Mana : MonoBehaviour
     public Slider easeManaSlider;
     public float maxMana = 100f;
     public float mana;
-    private float LerpSpeed = 0.03f;
+    private float lerpSpeed = 0.03f;
+
     void Start()
     {
         mana = maxMana;
     }
+
     void Update()
     {
         if (manaSlider.value != mana)
@@ -22,19 +24,15 @@ public class Mana : MonoBehaviour
             manaSlider.value = mana;
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            DrainMana(10);
-        }
-
         if (manaSlider.value != easeManaSlider.value)
         {
-            easeManaSlider.value = Mathf.Lerp(easeManaSlider.value, mana, LerpSpeed);
+            easeManaSlider.value = Mathf.Lerp(easeManaSlider.value, mana, lerpSpeed);
         }
     }
 
-    public void DrainMana(float ManaDrain)
+    public void DrainMana(float manaDrain)
     {
-        mana -= ManaDrain;
+        mana -= manaDrain;
+        mana = Mathf.Max(mana, 0);
     }
 }

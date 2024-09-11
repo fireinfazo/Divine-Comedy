@@ -10,7 +10,8 @@ public class Sword : MonoBehaviour
     public static int noOfClicks = 0;
     float lastClickedTime = 0;
     float maxComboDelay = 1;
- 
+    public float damage = 100f;
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -47,7 +48,16 @@ public class Sword : MonoBehaviour
             }
         }
     }
- 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);
+        }
+    }
+
     void OnClick()
     {
         lastClickedTime = Time.time;
