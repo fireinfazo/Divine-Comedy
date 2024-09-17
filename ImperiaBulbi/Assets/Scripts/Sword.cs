@@ -48,15 +48,6 @@ public class Sword : MonoBehaviour
             }
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-
-        if (enemy != null)
-        {
-            enemy.TakeDamage(damage);
-        }
-    }
 
     void OnClick()
     {
